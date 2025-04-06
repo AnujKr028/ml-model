@@ -3,25 +3,33 @@ import joblib
 import numpy as np
 from flask_cors import CORS
 
-
 app = Flask(__name__)
-CORS(app) 
+CORS(app)  # Enable CORS for frontend requests
 
-# Load the model
-model = joblib.load("model.pkl")
+# Load the trained ML model
+model = joblib.load("ml-model/model.pkl")  # Make sure this is the CatBoost model
 
 @app.route('/')
 def home():
-    return "Welcome to the Traffic Route Optimizer API!"
+    return "✅ Traffic Route Optimizer API is live!"
 
 @app.route('/predict', methods=['POST'])
 def predict():
     try:
         data = request.get_json()
-        features = np.array(data["features"])  # ← fixed this line
+        print("📦 Received data:", data)  # For debugging
+
+        # Ensure input is a 2D list of floats
+        features = np.array(data["features"], dtype=float).reshape(1, -1)
+
+        print("🔍 Features for prediction:", features)
+
         prediction = model.predict(features)
+
         return jsonify({"prediction": prediction.tolist()})
+
     except Exception as e:
+        print("❌ Error occurred:", str(e))  # Log error to server console
         return jsonify({"error": str(e)}), 400
 
 if __name__ == "__main__":
