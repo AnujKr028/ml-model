@@ -5,3 +5,4 @@ joblib
 catboost
 numpy
 pandas
+flask-cors
