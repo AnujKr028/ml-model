@@ -7,7 +7,7 @@ app = Flask(__name__)
 CORS(app)  # Enable CORS for frontend requests
 
 # Load the trained ML model
-model = joblib.load("ml-model/model.pkl")  # Make sure this is the CatBoost model
+model = joblib.load("model.pkl")  # Make sure this is the CatBoost model
 
 @app.route('/')
 def home():
