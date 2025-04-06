@@ -18,7 +18,7 @@ def home():
 def predict():
     try:
         data = request.get_json()
-        features = np.array(data["features"]).reshape(1, -1)
+        features = np.array(data["features"])  # ← fixed this line
         prediction = model.predict(features)
         return jsonify({"prediction": prediction.tolist()})
     except Exception as e:
